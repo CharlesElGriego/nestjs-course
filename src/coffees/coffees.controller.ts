@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Get, Param, Body, Post, HttpCode, HttpStatus, Res, Patch, Delete, Query } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
-import { Coffee } from './entitities/coffee.entity';
+import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
@@ -20,12 +20,12 @@ constructor(private readonly coffeesService: CoffeesService){
   @Get()
   findAll(@Query() paginationQuery) {
     // const { limit, offset } = paginationQuery;
-    return this.coffeesService.findAll();
+    return this.coffeesService.findAll(paginationQuery);
   }
   
   @Get(':id')
-  findOne(@Param('id') id: string): Coffee {
-    return this.coffeesService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<Coffee> {
+    return await this.coffeesService.findOne(id);
   }
 
   @Post()
