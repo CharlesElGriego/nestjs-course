@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: iluvdb
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8080:8080
+  # pgAdmin:
+  #   image: dpage/pgadmin4
+  #   ports: 
+  #     - '8089:80'
+  #   environment: 
+  #     PGADMIN_DEFAULT_EMAIL: cnavarro3196@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: SuperSecret
+
+#// Start containers in detached / background mode
+#// docker-compose up -d
+
+#// Stop containers
+# // docker-compose down
+
+# docker run -p 8089:80 \
+# -e 'PGADMIN_DEFAULT_EMAIL=cnavarro3196@gmail.com' \
+# -e 'PGADMIN_DEFAULT_PASSWORD=SuperSecret' \
+# -d dpage/pgadmin4
