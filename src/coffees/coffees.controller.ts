@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Controller, Get, Param, Body, Post, HttpCode, HttpStatus, Res, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, HttpCode, HttpStatus, Res, Patch, Delete, Query, UseGuards } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('coffees')
+@UseGuards(AuthGuard())
 export class CoffeesController {
 constructor(private readonly coffeesService: CoffeesService){
   
