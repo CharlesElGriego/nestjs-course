@@ -22,7 +22,8 @@
     "docker": "docker-compose up -d",
     "migration:run": "npx typeorm migration:run",
     "migration:revert": "npx typeorm migration:revert",
-    "migration:generate": "npx typeorm migration:generate -n SchemaSync"
+    "migration:generate": "npx typeorm migration:generate -n SchemaSync",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",

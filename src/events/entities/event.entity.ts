@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Entity, Column, Index } from "typeorm";
+import { PrimaryGeneratedColumn, Entity, Column, Index } from 'typeorm';
 
 @Entity()
 export class Event {
@@ -8,10 +8,10 @@ export class Event {
   @Column()
   type: string;
 
-  /** 
- * To help speed up this search, we can define an index on the “name” column 
- * using the @Index decorator. 
- */
+  /**
+   * To help speed up this search, we can define an index on the “name” column
+   * using the @Index decorator.
+   */
   @Index() // <--
   @Column()
   name: string;

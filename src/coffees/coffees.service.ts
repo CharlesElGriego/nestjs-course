@@ -6,28 +6,25 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import {Event } from '../events/entities/event.entity';
+import { Event } from '../events/entities/event.entity';
 
 @Injectable()
 export class CoffeesService {
-
   constructor(
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
-    private readonly connection: Connection
-  ) { }
+    private readonly connection: Connection,
+  ) {}
 
   findAll(paginationQuery: PaginationQueryDto): Promise<Coffee[]> {
-
     const { limit, offset } = paginationQuery;
     return this.coffeeRepository.find({
       relations: ['flavors'],
-      skip: offset, 
-      take: limit, 
+      skip: offset,
+      take: limit,
     });
-
   }
 
   async findOne(id: string): Promise<Coffee> {
@@ -78,20 +75,20 @@ export class CoffeesService {
 
   async recommendCoffee(coffee: Coffee): Promise<void> {
     const queryRunner = this.connection.createQueryRunner();
-    
+
     await queryRunner.connect();
-    await queryRunner.startTransaction(); 
+    await queryRunner.startTransaction();
     try {
       coffee.recommendations++;
-      
+
       const recommendEvent = new Event();
       recommendEvent.name = 'recommend_coffee';
       recommendEvent.type = 'coffee';
       recommendEvent.payload = { coffeeId: coffee.id };
-    
-      await queryRunner.manager.save(coffee); 
+
+      await queryRunner.manager.save(coffee);
       await queryRunner.manager.save(recommendEvent);
-      
+
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();

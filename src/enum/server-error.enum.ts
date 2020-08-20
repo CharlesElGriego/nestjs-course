@@ -1,3 +1,3 @@
-export enum SERVER_ERROR{
-  DUPLICATE = '23505'
+export enum SERVER_ERROR {
+  DUPLICATE = '23505',
 }

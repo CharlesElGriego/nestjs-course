@@ -4,18 +4,18 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true, 
-   // transform:false, // check performance, best in false
-    
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      // transform:false, // check performance, best in false
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap();
 
-
- // npx typeorm migration:create -n CoffeeRefactor
+// npx typeorm migration:create -n CoffeeRefactor
 /* RUNNING MIGRATIONS */
 
 /**
@@ -24,10 +24,10 @@ bootstrap();
  * before a Migration can run, it needs compilated files.
  */
 
- // Compile project first 
+// Compile project first
 //npm run build
 
-// Run migration(s) 
+// Run migration(s)
 //npx typeorm migration:run
 
 // REVERT migration(s)
@@ -35,4 +35,3 @@ bootstrap();
 
 // Let TypeOrm generate migrations (for you)
 // npx typeorm migration:generate -n SchemaSync
-
