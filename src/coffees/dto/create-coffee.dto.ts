@@ -1,4 +1,5 @@
 import { IsString } from 'class-validator';
+import { User } from 'src/auth/entities/user.entity';
 export class CreateCoffeeDto {
   @IsString()
   readonly name: string;
@@ -8,4 +9,6 @@ export class CreateCoffeeDto {
 
   @IsString({ each: true })
   readonly flavors: string[];
+
+  user: User;
 }

@@ -1,9 +1,11 @@
+import { User } from 'src/auth/entities/user.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Flavor } from './flavor.entity';
 
@@ -34,4 +36,7 @@ export class Coffee {
 
   @Column({ default: 0 })
   recommendations: number;
+
+  @ManyToOne(type => User)
+  user: User;
 }

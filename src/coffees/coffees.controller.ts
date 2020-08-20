@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Controller,
-  Get,
-  Param,
   Body,
-  Post,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
-  Res,
+  Param,
   Patch,
-  Delete,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { User } from 'src/auth/entities/user.entity';
 import { CoffeesService } from './coffees.service';
-import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { Coffee } from './entities/coffee.entity';
 
 @Controller('coffees')
 @UseGuards(AuthGuard())
@@ -43,7 +44,8 @@ export class CoffeesController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  create(@Body() createCoffeeDto: CreateCoffeeDto): any {
+  create(@Body() createCoffeeDto: CreateCoffeeDto, @GetUser() user: User): any {
+    createCoffeeDto.user = user;
     return this.coffeesService.create(createCoffeeDto);
     // return `This action creates a coffee`;
   }
@@ -54,7 +56,7 @@ export class CoffeesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coffeesService.remove(id);
+  remove(@Param('id') id: string, @GetUser() user) {
+    return this.coffeesService.remove(id, user);
   }
 }
