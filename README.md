@@ -20,7 +20,7 @@ $ npm install
 
 ```bash
 # For the first time, run my docker services
-$ npm run docker
+$ docker-compose up -d
 
 # development
 $ npm run start
