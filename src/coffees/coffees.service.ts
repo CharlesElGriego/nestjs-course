@@ -1,14 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Request } from 'express';
 import { User } from 'src/auth/entities/user.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Connection, Repository } from 'typeorm';
 import { Event } from '../events/entities/event.entity';
+import { COFFEE_BRANDS } from './coffees.constants';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
-
 @Injectable()
 export class CoffeesService {
   constructor(
@@ -17,7 +19,11 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
-  ) {}
+    @Inject(REQUEST) private request: Request,
+    @Inject(COFFEE_BRANDS) coffeeBrands: string[],
+  ) {
+    console.log(coffeeBrands);
+  }
 
   findAll(paginationQuery: PaginationQueryDto): Promise<Coffee[]> {
     const { limit, offset } = paginationQuery;
@@ -121,3 +127,37 @@ export class CoffeesService {
     return this.flavorRepository.create({ name });
   }
 }
+
+// Scope DEFAULT - This is assumed when NO Scope is entered like so: @Injectable() */
+// @Injectable({ scope: Scope.DEFAULT })
+// export class CoffeesService {}
+
+// // -------------
+
+// /**
+//  * Scope TRANSIENT
+
+//  * Transient providers are NOT shared across consumers.
+//  * Each consumer that injects a transient provider
+//  * will receive a new, dedicated instance of that provider.
+//  */
+// @Injectable({ scope: Scope.TRANSIENT })
+// export class CoffeesService {}
+
+// // Scope TRANSIENT with a Custom Provider
+// {
+//   provide: 'COFFEE_BRANDS',
+//   useFactory: () => ['buddy brew', 'nescafe'],
+//   scope: Scope.TRANSIENT // 👈
+// }
+
+// // -------------
+
+// /**
+//  * Scope REQUEST
+
+//  * Request scope provides a new instance of the provider
+//  * exclusively for each incoming request.
+//  */
+// @Injectable({ scope: Scope.REQUEST })
+// export class CoffeesService {}
