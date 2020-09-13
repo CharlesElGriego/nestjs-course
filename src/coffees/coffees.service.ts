@@ -1,12 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 import { User } from 'src/auth/entities/user.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Connection, Repository } from 'typeorm';
 import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import coffeesConfig from './config/coffees.config';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
@@ -19,10 +19,20 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
-    @Inject(REQUEST) private request: Request,
+    //  @Inject(REQUEST) private request: Request, BE CAREFUL DON'T ADD UNLESS NECESSARY, PERFORMANCE ISSUES
+    // IT'S GOING TO CREATE A NEW INSTANCE FOR EACH REQUEST
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
+    @Inject(coffeesConfig.KEY)
+    private coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+    private readonly configService: ConfigService, // 👈
   ) {
-    console.log(coffeeBrands);
+    console.log('CoffesBrands: ' + coffeeBrands);
+    const databaseHost = this.configService.get('database.host', 'localhost');
+
+    //  const databaseHost = this.configService.get<string>('DATABASE_HOST', 'localhost');
+    //usefull if some key dont work
+    console.log('DataBaseHost: ' + databaseHost);
+    console.log('CoffessConfig:' + coffeesConfiguration.foo);
   }
 
   findAll(paginationQuery: PaginationQueryDto): Promise<Coffee[]> {
