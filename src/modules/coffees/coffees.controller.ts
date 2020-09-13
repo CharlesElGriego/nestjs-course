@@ -16,6 +16,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
@@ -27,6 +28,7 @@ import { Coffee } from './entities/coffee.entity';
 @Controller('coffees')
 @UseGuards(AuthGuard())
 @UsePipes(ParseIntPipe)
+@ApiTags('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
   // @Get()
@@ -34,6 +36,7 @@ export class CoffeesController {
   //   // Express.js example using status() and send() methods
   //   response.status(200).send('Holas action returns all coffees'); // DONT, harder to test
   // }
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @Get()
   findAll(@Query() paginationQuery) {
     // const { limit, offset } = paginationQuery;
