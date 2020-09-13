@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Connection, Repository } from 'typeorm';
-import { Event } from '../events/entities/event.entity';
+import { Event } from '../../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 import coffeesConfig from './config/coffees.config';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
@@ -44,7 +44,7 @@ export class CoffeesService {
     });
   }
 
-  async findOneByUser(id: string, user: User): Promise<Coffee> {
+  async findOneByUser(id: number, user: User): Promise<Coffee> {
     const coffee = await this.coffeeRepository.findOne(id, {
       relations: ['flavors'],
       where: {
@@ -101,7 +101,7 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async remove(id: string, user: User): Promise<Coffee> {
+  async remove(id: number, user: User): Promise<Coffee> {
     const coffee = await this.findOneByUser(id, user);
     return this.coffeeRepository.remove(coffee);
   }

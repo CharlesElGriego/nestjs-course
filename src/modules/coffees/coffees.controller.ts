@@ -12,10 +12,13 @@ import {
   Post,
   Query,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
+import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -23,6 +26,7 @@ import { Coffee } from './entities/coffee.entity';
 
 @Controller('coffees')
 @UseGuards(AuthGuard())
+@UsePipes(ParseIntPipe)
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
   // @Get()
@@ -30,7 +34,6 @@ export class CoffeesController {
   //   // Express.js example using status() and send() methods
   //   response.status(200).send('Holas action returns all coffees'); // DONT, harder to test
   // }
-
   @Get()
   findAll(@Query() paginationQuery) {
     // const { limit, offset } = paginationQuery;
@@ -51,12 +54,15 @@ export class CoffeesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+  update(
+    @Param('id') id: string,
+    @Body(ValidationPipe) updateCoffeeDto: UpdateCoffeeDto,
+  ) {
     return this.coffeesService.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @GetUser() user) {
+  remove(@Param('id', ParseIntPipe) id: number, @GetUser() user) {
     return this.coffeesService.remove(id, user);
   }
 }

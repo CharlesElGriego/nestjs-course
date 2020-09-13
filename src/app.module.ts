@@ -1,14 +1,15 @@
 import * as Joi from '@hapi/joi';
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from './app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
-import { CoffeesModule } from './coffees/coffees.module';
-import { DatabaseModule } from './database/database.module';
+import { CoffeeRatingModule } from './modules/coffee-rating/coffee-rating.module';
+import { CoffeesModule } from './modules/coffees/coffees.module';
+import { DatabaseModule } from './modules/database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,8 +36,15 @@ import { DatabaseModule } from './database/database.module';
     AuthModule,
     CoffeeRatingModule,
     DatabaseModule,
+    // CommonModule, -> here is the api key guard, I created a user guard already
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
