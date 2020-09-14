@@ -23,7 +23,12 @@
     "migration:run": "npx typeorm migration:run",
     "migration:revert": "npx typeorm migration:revert",
     "migration:generate": "npx typeorm migration:generate -n SchemaSync",
-    "pretty": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
+    "pretty": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
+    "posttes:e2e": "docker-compose stop test-db && docker-compose rm -f test-db",
+    "pretest:e2e": "docker-compose up -d test-db",
+    "run:jest": "jest --config ./test/jest-e2e.json",
+    "tesst:e2e": "npm-run-all the-actual-test run-after-test-even-if-failed --continue-on-error",
+    "test:e2e:teardown": "docker-compose stop test-db && docker-compose rm -f test-db"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

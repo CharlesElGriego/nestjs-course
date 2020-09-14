@@ -17,9 +17,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { User } from 'src/auth/entities/user.entity';
-import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
+import { User } from '../../auth/entities/user.entity';
+import { ParseIntPipe } from '../../common/pipes/parse-int.pipe';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';

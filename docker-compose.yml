@@ -11,18 +11,24 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: iluvdb
   adminer:
-      image: adminer
-      restart: always
-      ports:
-        - 8080:8080
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  test-db:
+    image: postgres
+    restart: always
+    ports:
+      - '5433:5432' # 👈 Note the 5433 port (since we are using 5432 for our regular db)
+    environment:
+      POSTGRES_PASSWORD: example
   # pgAdmin:
   #   image: dpage/pgadmin4
-  #   ports: 
+  #   ports:
   #     - '8089:80'
-  #   environment: 
+  #   environment:
   #     PGADMIN_DEFAULT_EMAIL: cnavarro3196@gmail.com
   #     PGADMIN_DEFAULT_PASSWORD: SuperSecret
-
 #// Start containers in detached / background mode
 #// docker-compose up -d
 

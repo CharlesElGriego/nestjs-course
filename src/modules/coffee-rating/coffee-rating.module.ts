@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CoffeesModule } from 'src/modules/coffees/coffees.module';
-import { DatabaseModule } from 'src/modules/database/database.module';
+import { CoffeesModule } from '../../modules/coffees/coffees.module';
+import { DatabaseModule } from '../database/database.module';
 import { CoffeeRatingService } from './coffee-rating.service';
 
 @Module({

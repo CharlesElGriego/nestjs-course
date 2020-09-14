@@ -1,4 +1,3 @@
-import { User } from 'src/auth/entities/user.entity';
 import {
   Column,
   Entity,
@@ -7,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../../../auth/entities/user.entity';
 import { Flavor } from './flavor.entity';
 
 @Entity() /// Entity('Coffees') will change the name, it's going to have lowercase by default
